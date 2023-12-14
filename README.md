@@ -17,3 +17,4 @@ Projek ini adalah contoh penggunaan ESP8266 untuk mendeteksi gas berdasarkan nil
 - RTClib
 
 ## Preview
+![Preview](https://raw.githubusercontent.com/AsrofurRizqi/Gas-Detect/main/testing.jpg)
