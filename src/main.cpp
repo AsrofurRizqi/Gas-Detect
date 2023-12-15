@@ -5,6 +5,7 @@
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_GFX.h>
 #include <WiFiManager.h>
+#include <AsyncMqttClient.h> 
 
 // define the pin used to measure the gas sensor
 #define MQ135_PIN A0
@@ -15,6 +16,11 @@
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
+
+// define the mqtt server
+#define MQTT_HOST IPAddress(192, 168, 1, 100)
+#define MQTT_PORT 1883
+#define MQTT_TOPIC "gas_detector"
 
 RTC_DS3231 rtc;
 MQ135 gasSensor = MQ135(MQ135_PIN);
@@ -107,20 +113,26 @@ void loop() {
   Serial.println(correctedPPM);
 
   // display gas sensor value on screen
-  display.setCursor(15, 20);
+  display.setCursor(15, 15);
   display.print("Resistance: ");
   display.println(resistance);
-  display.setCursor(15, 30);
+  display.setCursor(15, 25);
   display.print("PPM: ");
   display.println(correctedPPM);
 
   // display temperature and pin state
-  display.setCursor(15, 40);
+  display.setCursor(15, 35);
   display.print("Room Temp: ");
   display.println(temperature);
-  display.setCursor(15, 50);
+  display.println(" C");
+  display.setCursor(15, 45);
   display.print("Relay State: ");
   display.println(digitalRead(relayPin));
+
+  // display wifi status
+  display.setCursor(15, 55);
+  display.print("Wifi : ");
+  display.println(WiFi.status() == WL_CONNECTED ? "Connected" : "Disconnected");
   display.display();
 
   // turn on relay if ppm is greater than 100
