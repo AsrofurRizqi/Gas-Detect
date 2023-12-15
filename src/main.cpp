@@ -4,6 +4,7 @@
 #include <MQ135.h>
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_GFX.h>
+#include <WiFiManager.h>
 
 // define the pin used to measure the gas sensor
 #define MQ135_PIN A0
@@ -31,8 +32,6 @@ void setup() {
     while (1);
   }
 
-  rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-
   // initialize relay
   pinMode(relayPin, OUTPUT);
   digitalWrite(relayPin, LOW);
@@ -52,6 +51,11 @@ void setup() {
 
   // get temperature and humidity
   temperature = rtc.getTemperature();
+
+  // initialize wifi to connect to internet
+  WiFiManager wifiManager;
+  wifiManager.autoConnect("Gas Detector");
+  Serial.println("connected to wifi");
 }
 
 void loop() {
